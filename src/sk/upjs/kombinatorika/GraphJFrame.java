@@ -12,6 +12,7 @@ package sk.upjs.kombinatorika;
 
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import sk.upjs.paz.Graph;
 
 /**
@@ -180,7 +181,8 @@ public class GraphJFrame extends javax.swing.JFrame {
                         .addComponent(matchingBtn))
                     .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1))
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -188,6 +190,10 @@ public class GraphJFrame extends javax.swing.JFrame {
 
 private void floydBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_floydBtnActionPerformed
 // TODO add your handling code here:
+    if(graph == null){
+        outputTextArea.setText("Žiadny graf nie je k dispozícii! Najprv načítajte graf.");
+        return;
+    }
     outputTextArea.setText("Floydov algoritmus ešte nie je naimplementovaný");
 }//GEN-LAST:event_floydBtnActionPerformed
 
@@ -196,55 +202,82 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     int hodnota = fileChooser.showDialog(null, "Načítaj graf");
     
     if(hodnota == JFileChooser.APPROVE_OPTION){
+        outputTextArea.setText("");
         File subor = fileChooser.getSelectedFile();
         
         gr = new GraphReader();
-	matrix = gr.readMatrixFromFile(subor.getPath());
-                
-	graph = gr.readGraphFromIncidencyMatrix(matrix);
-	System.out.println(graph.getEdges());
-        System.out.println(graph.getVertices());
-        System.out.println(subor.getPath());
+    	graph = gr.readGraphFromFile(subor.getPath());
         
-        suborTextfield.setText(subor.getAbsolutePath());
-        
-        GraphInfo gi=new GraphInfo(graph);
-			outputTextArea.setText(gi.basicGraphInfo());
+        if(graph != null){
+            suborTextfield.setText(subor.getAbsolutePath());
+            GraphInfo gi=new GraphInfo(graph);
+            outputTextArea.setText(gi.basicGraphInfo());
+        }else{
+            JOptionPane.showMessageDialog(null, "Graf sa nepodarilo načítať!");
+        }
     }
 }//GEN-LAST:event_jButton1ActionPerformed
 
 private void dijkstraBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dijkstraBtnActionPerformed
 // TODO add your handling code here:
+    if(graph == null){
+        outputTextArea.setText("Žiadny graf nie je k dispozícii! Najprv načítajte graf.");
+        return;
+    }
     outputTextArea.setText("Dijkstrov algoritmus ešte nie je naimplementovaný");
 }//GEN-LAST:event_dijkstraBtnActionPerformed
 
 private void fordBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fordBtnActionPerformed
 // TODO add your handling code here:
+    if(graph == null){
+        outputTextArea.setText("Žiadny graf nie je k dispozícii! Najprv načítajte graf.");
+        return;
+    }
     outputTextArea.setText("Fordov algoritmus ešte nie je naimplementovaný");
 }//GEN-LAST:event_fordBtnActionPerformed
 
 private void primBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_primBtnActionPerformed
 // TODO add your handling code here:
+    if(graph == null){
+        outputTextArea.setText("Žiadny graf nie je k dispozícii! Najprv načítajte graf.");
+        return;
+    }
     outputTextArea.setText("Primov algoritmus ešte nie je naimplementovaný");
 }//GEN-LAST:event_primBtnActionPerformed
 
 private void kruskalBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kruskalBtnActionPerformed
 // TODO add your handling code here:
+    if(graph == null){
+        outputTextArea.setText("Žiadny graf nie je k dispozícii! Najprv načítajte graf.");
+        return;
+    }
     outputTextArea.setText("Kruskalov algoritmus ešte nie je naimplementovaný");
 }//GEN-LAST:event_kruskalBtnActionPerformed
 
 private void christofidesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_christofidesBtnActionPerformed
 // TODO add your handling code here:
+    if(graph == null){
+        outputTextArea.setText("Žiadny graf nie je k dispozícii! Najprv načítajte graf.");
+        return;
+    }
     outputTextArea.setText("Christofidesov algoritmus ešte nie je naimplementovaný");
 }//GEN-LAST:event_christofidesBtnActionPerformed
 
 private void maxTokBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxTokBtnActionPerformed
 // TODO add your handling code here:
+    if(graph == null){
+        outputTextArea.setText("Žiadny graf nie je k dispozícii! Najprv načítajte graf.");
+        return;
+    }
     outputTextArea.setText("Ford_Fulkersonov algoritmus ešte nie je naimplementovaný");
 }//GEN-LAST:event_maxTokBtnActionPerformed
 
 private void matchingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matchingBtnActionPerformed
 // TODO add your handling code here:
+    if(graph == null){
+        outputTextArea.setText("Žiadny graf nie je k dispozícii! Najprv načítajte graf.");
+        return;
+    }
     outputTextArea.setText("Matching maximálnej váhy ešte nie je naimplementovaný");
 }//GEN-LAST:event_matchingBtnActionPerformed
 

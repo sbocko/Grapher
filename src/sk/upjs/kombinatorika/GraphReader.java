@@ -8,8 +8,22 @@ import java.util.regex.Pattern;
 import sk.upjs.paz.Graph;
 
 public class GraphReader {
+    
+        public Graph readGraphFromFile(String filename){            
+            return readGraphFromIncidencyMatrix(filename);
+        }
 	
-	public Graph readGraphFromIncidencyMatrix(double[][] matrix){
+        /**
+         * Creates graph from its incidency matrix stored in file.
+         * @param filename the path to file with incidency matrix
+	 * @return graph that corresponds to the incidency matrix
+         */
+	private Graph readGraphFromIncidencyMatrix(String filename){
+                double[][] matrix = readMatrixFromFile(filename);
+                if(matrix == null){
+                    return null;
+                }
+                
 		Graph graph = new Graph();
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix.length; j++) {
@@ -23,11 +37,11 @@ public class GraphReader {
 	}
 	
 	/**
-	 * 
+	 * Reads the incidency matrix from file. Returns null, if some problem occures.
 	 * @param filename the path to file with incidency matrix
-	 * @return
+	 * @return graph incidency matrix
 	 */
-	public double[][] readMatrixFromFile(String filename){
+	private double[][] readMatrixFromFile(String filename){
 		double[][] matrix = null;
 		
 		File file = new File(filename);
@@ -51,6 +65,7 @@ public class GraphReader {
 			
 		}catch(Exception e){
 			e.printStackTrace();
+                        return null;
 		}finally{
 			if(scanner != null){
 				scanner.close();
@@ -82,6 +97,6 @@ public class GraphReader {
 				scanner.close();
 			}
 		}
-		return 0;
+                return -1;
 	}
 }
