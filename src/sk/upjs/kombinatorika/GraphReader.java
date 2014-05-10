@@ -9,16 +9,6 @@ import sk.upjs.paz.Graph;
 
 public class GraphReader {
 	
-	public static void main(String[] args) {
-		GraphReader gr = new GraphReader();
-		double[][] matrix = gr.readMatrixFromFile("matica.txt");
-//		for (int i = 0; i < matrix.length; i++) {
-//			System.out.println(Arrays.toString(matrix[i]));
-//		}
-		Graph graph = gr.readGraphFromIncidencyMatrix(matrix);
-		System.out.println(graph.getEdges());
-	}
-	
 	public Graph readGraphFromIncidencyMatrix(double[][] matrix){
 		Graph graph = new Graph();
 		for (int i = 0; i < matrix.length; i++) {
@@ -37,7 +27,7 @@ public class GraphReader {
 	 * @param filename the path to file with incidency matrix
 	 * @return
 	 */
-	private double[][] readMatrixFromFile(String filename){
+	public double[][] readMatrixFromFile(String filename){
 		double[][] matrix = null;
 		
 		File file = new File(filename);
