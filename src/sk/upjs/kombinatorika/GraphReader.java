@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-
+import sk.upjs.paz.Edge;
 import sk.upjs.paz.Graph;
 
 public class GraphReader {
@@ -28,7 +28,8 @@ public class GraphReader {
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix.length; j++) {
 				if(matrix[i][j] != 0){
-					graph.addEdge(graph.getOrCreateVertex(""+(i+1)), graph.getOrCreateVertex(""+(j+1)));
+                                    Edge edge =graph.addEdge(graph.getOrCreateVertex(""+(i+1)), graph.getOrCreateVertex(""+(j+1)));
+                                    edge.setWeight(matrix[i][j]);
 				}
 			}
 		}
