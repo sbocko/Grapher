@@ -103,7 +103,7 @@ public class GraphInfo {
     private String weighted() {
         for (Edge edge : edges) {
             if (edge.getWeight() > 1) {
-                return "nie";
+                return "áno";
             }
         }
         return "nie";
@@ -143,7 +143,7 @@ public class GraphInfo {
      * @return minimum degree of a vertex in the graph
      */
     private int minDegree(boolean directed) {
-        if (vertices.size() == 0) {
+        if (vertices.isEmpty()) {
             return 0;
         }
         int minDegree = Integer.MAX_VALUE;
@@ -166,7 +166,7 @@ public class GraphInfo {
      * @return maximum degree of a vertex in the graph
      */
     private int maxDegree(boolean directed) {
-        if (vertices.size() == 0) {
+        if (vertices.isEmpty()) {
             return 0;
         }
         int maxDegree = 0;
@@ -248,7 +248,7 @@ public class GraphInfo {
         for (int i = 0; i < colors.length; i++) {
             colors[i] = -1;
         }
-        Stack<Vertex> stack = new Stack<Vertex>();
+        Stack<Vertex> stack = new Stack<>();
 
         // group - marks one of the two groups of vertices, it can have value 0
         // or 1
