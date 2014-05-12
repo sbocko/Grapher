@@ -102,7 +102,7 @@ public class GraphInfo {
      */
     private String weighted() {
         for (Edge edge : edges) {
-            if (edge.getWeight() > 1) {
+            if (edge.getWeight() != 1) {
                 return "áno";
             }
         }

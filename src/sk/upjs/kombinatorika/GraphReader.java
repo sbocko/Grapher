@@ -1,7 +1,6 @@
 package sk.upjs.kombinatorika;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import sk.upjs.paz.Edge;
@@ -9,8 +8,22 @@ import sk.upjs.paz.Graph;
 
 public class GraphReader {
     
+        /**
+         * Reads graph from file. 
+         * @param filename path to the file with graph
+         * @return a graph instance. Null if not successfull.
+         */
         public Graph readGraphFromFile(String filename){            
-            return readGraphFromIncidencyMatrix(filename);
+            Graph graph = readGraphFromIncidencyMatrix(filename);
+            
+            if(graph == null){
+                boolean successfull = graph.loadFromFile(filename);
+                if(!successfull){
+                    graph = null;
+                }
+            }
+            
+            return graph;
         }
 	
         /**
