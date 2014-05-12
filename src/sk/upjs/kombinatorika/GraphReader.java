@@ -17,7 +17,9 @@ public class GraphReader {
             Graph graph = readGraphFromIncidencyMatrix(filename);
             
             if(graph == null){
+                graph = new Graph();
                 boolean successfull = graph.loadFromFile(filename);
+                System.out.println("Graph is null: " + successfull);
                 if(!successfull){
                     graph = null;
                 }
