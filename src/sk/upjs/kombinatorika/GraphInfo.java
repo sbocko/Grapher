@@ -1,5 +1,7 @@
 package sk.upjs.kombinatorika;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import sk.upjs.paz.Edge;
@@ -58,17 +60,17 @@ public class GraphInfo {
     private String connected() {
         // tests if there is a directed path from every vertex to all the other vertices 
         for (Vertex start : vertices) {
-            // visited - array with values saying if a vertex has been visited
+            // visited - map with values saying if a vertex has been visited
             // during depth-first search
-            boolean[] visited = new boolean[vertices.size()];
-            for (int i = 0; i < visited.length; i++) {
-                visited[i] = false;
+            Map<String, Boolean> visited = new HashMap<>();
+            for (Vertex v : vertices) {
+                visited.put(v.getLabel(), false);
             }
 
-            Stack<Vertex> stack = new Stack<Vertex>();
+            Stack<Vertex> stack = new Stack<>();
 
-            int startLabel = Integer.parseInt(start.getLabel());
-            visited[startLabel - 1] = true;
+            String startLabel = start.getLabel();
+            visited.put(startLabel, true);
 
             stack.push(start);
 
@@ -77,17 +79,17 @@ public class GraphInfo {
                 Vertex v = stack.pop();
 
                 for (Vertex neighbour : v.getOutNeighbours()) {
-                    int neighbourLabel = Integer.parseInt(neighbour.getLabel());
-                    if (visited[neighbourLabel - 1] == false) {
-                        visited[neighbourLabel - 1] = true;
+                    String neighbourLabel = neighbour.getLabel();
+                    if (visited.get(neighbourLabel) == false) {
+                        visited.put(neighbourLabel, true);
                         stack.push(neighbour);
                     }
                 }
             }
 
             // if there is still an unvisited vertex, the graph is not connected
-            for (int i = 0; i < visited.length; i++) {
-                if (visited[i] == false) {
+            for (Boolean visitedVertex : visited.values()) {
+                if (!visitedVertex) {
                     return "nie";
                 }
             }
@@ -244,9 +246,9 @@ public class GraphInfo {
      * @return "áno" if the graph is bipartite; "nie" otherwise
      */
     public String isBipartite() {
-        int[] colors = new int[vertices.size()];
-        for (int i = 0; i < colors.length; i++) {
-            colors[i] = -1;
+        Map<String, Integer> colors = new HashMap<>();
+        for (Vertex vertex : vertices) {
+            colors.put(vertex.getLabel(), -1);
         }
         Stack<Vertex> stack = new Stack<>();
 
@@ -256,31 +258,30 @@ public class GraphInfo {
 
         // every component is checked
         for (Vertex start : vertices) {
-            int startLabel = Integer.parseInt(start.getLabel());
+            String startLabel = start.getLabel();
 
-            if (colors[startLabel - 1] == -1) {
-                colors[startLabel - 1] = group;
+            if (colors.get(startLabel) == -1) {
+                colors.put(startLabel, group);
 
                 stack.push(start);
 
                 // depth-first search of the component
                 while (!stack.isEmpty()) {
                     Vertex v = stack.pop();
-                    int vLabel = Integer.parseInt(v.getLabel());
-                    group = changeNumber(colors[vLabel - 1]);
+                    String vLabel = v.getLabel();
+                    group = changeNumber(colors.get(vLabel));
 
                     for (Vertex neighbour : v.getNeighbours()) {
-                        int vertexLabel = Integer
-                                .parseInt(neighbour.getLabel());
-                        if (colors[vertexLabel - 1] == -1) {
-                            colors[vertexLabel - 1] = group;
+                        String neighbourLabel = neighbour.getLabel();
+                        if (colors.get(neighbourLabel) == -1) {
+                            colors.put(neighbourLabel, group);
                             stack.push(neighbour);
                             continue;
                         }
                         // the graph is not bipartite if there are two vertices from
                         // the
                         // same group that are connected with an edge
-                        if (colors[vertexLabel - 1] != group) {
+                        if (colors.get(neighbourLabel) != group) {
                             return "nie";
                         }
                     }

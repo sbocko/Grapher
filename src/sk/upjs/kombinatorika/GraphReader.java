@@ -19,7 +19,6 @@ public class GraphReader {
             if(graph == null){
                 graph = new Graph();
                 boolean successfull = graph.loadFromFile(filename);
-                System.out.println("Graph is null: " + successfull);
                 if(!successfull){
                     graph = null;
                 }
@@ -80,8 +79,8 @@ public class GraphReader {
 			}
 			
 		}catch(Exception e){
-			e.printStackTrace();
-                        return null;
+                    System.err.println("Error parsing incidency matrix: " + e.getMessage());
+                    return null;
 		}finally{
 			if(scanner != null){
 				scanner.close();
