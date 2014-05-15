@@ -2,9 +2,11 @@ package sk.upjs.kombinatorika;
 
 import java.io.File;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.regex.Pattern;
 import sk.upjs.paz.Edge;
 import sk.upjs.paz.Graph;
+import sk.upjs.paz.Vertex;
 
 public class GraphReader {
     
@@ -20,8 +22,13 @@ public class GraphReader {
                 graph = new Graph();
                 boolean successfull = graph.loadFromFile(filename);
                 if(!successfull){
-                    graph = null;
+                    return null;
                 }
+            }
+            
+            if(!directed(graph)){
+                //automatically removes duplicate edges
+                graph.setDirected(false);
             }
             
             return graph;
@@ -114,4 +121,28 @@ public class GraphReader {
 		}
                 return -1;
 	}
+        
+        /**
+     * Tests if the graph is directed. The graph is undirected if every edge
+     * from Vertex v1 to Vertex v2 has its counterpart - the edge from v2 to v1
+     * which has the same weight, otherwise the graph is directed.
+     *
+     * @return true if the graph is oriented; false otherwise
+     */
+    private boolean directed(Graph graph) {
+        Set<Vertex> vertices = graph.getVertices();
+        
+        for (Vertex vertex : vertices) {
+            Set<Vertex> neighbours = vertex.getNeighbours();
+            for (Vertex neighbour : neighbours) {
+                if (!(graph.hasEdge(vertex, neighbour)
+                        && graph.hasEdge(neighbour, vertex) && graph.getEdge(
+                                vertex, neighbour).getWeight() == graph.getEdge(
+                                neighbour, vertex).getWeight())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

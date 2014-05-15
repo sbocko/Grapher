@@ -33,19 +33,16 @@ public class GraphInfo {
      * @return string with basic information about the graph
      */
     public String basicGraphInfo() {
-        vertices = graph.getVertices();
-
-        boolean directed = directed();
-        int minDegree = minDegree(directed);
-        int maxDegree = maxDegree(directed);
-        String basicInfo = "Orientovaný: " + booleanValueToString(directed)
+        int minDegree = minDegree();
+        int maxDegree = maxDegree();
+        String basicInfo = "Orientovaný: " + booleanValueToString(graph.isDirected())
                 + "\n" + "Ohodnotený: " + weighted() + "\n" + "Súvislý: "
                 + connected() + "\n" + "Počet vrcholov: " + vertices.size()
                 + "\n" + "Počet hrán: " + edges.size() + "\n" + "Zoznam hrán: "
                 + "\n" + listOfEdges() + "\n" + "Minimálny stupeň vrchola: "
                 + minDegree + "\n" + "Maximálny stupeň vrchola: " + maxDegree
                 + "\n" + "Regulárny: "
-                + regular(directed, minDegree, maxDegree) + "\n"
+                + regular(minDegree, maxDegree) + "\n"
                 + "Bipartitný: " + isBipartite();
 
         return basicInfo;
@@ -98,7 +95,7 @@ public class GraphInfo {
     }
 
     /**
-     * Tests if the graph is weighted
+     * Tests if the graph is weighted.
      *
      * @return "áno" if the graph is weighted; "nie" otherwise
      */
@@ -114,17 +111,16 @@ public class GraphInfo {
     /**
      * Tests if the graph is regular.
      *
-     * @param directed whether the graph is directed
      * @param minDegree minimum degree of a vertex in the graph
      * @param maxDegree maximum degree of a vertex in the graph
      * @return áno" if the graph is regular; "nie" otherwise
      */
-    private String regular(boolean directed, int minDegree, int maxDegree) {
+    private String regular(int minDegree, int maxDegree) {
         if (minDegree != maxDegree) {
             return "nie";
         }
 
-        if (directed) {
+        if (graph.isDirected()) {
             for (Vertex vertex : vertices) {
                 if (vertex.getInNeighbours().size() != vertex
                         .getOutNeighbours().size()) {
@@ -141,10 +137,9 @@ public class GraphInfo {
     /**
      * Returns minimum of all degrees of vertices
      *
-     * @param directed whether the graph is directed
      * @return minimum degree of a vertex in the graph
      */
-    private int minDegree(boolean directed) {
+    private int minDegree() {
         if (vertices.isEmpty()) {
             return 0;
         }
@@ -155,19 +150,16 @@ public class GraphInfo {
                 minDegree = vertexDegree;
             }
         }
-        if (!directed) {
-            minDegree = minDegree / 2;
-        }
+
         return minDegree;
     }
 
     /**
-     * Returns maximum of all degrees of vertices
+     * Returns maximum of all degrees of vertices.
      *
-     * @param directed whether the graph is directed
      * @return maximum degree of a vertex in the graph
      */
-    private int maxDegree(boolean directed) {
+    private int maxDegree() {
         if (vertices.isEmpty()) {
             return 0;
         }
@@ -179,9 +171,6 @@ public class GraphInfo {
             }
         }
 
-        if (!directed) {
-            maxDegree = maxDegree / 2;
-        }
         return maxDegree;
     }
 
@@ -200,39 +189,22 @@ public class GraphInfo {
     }
 
     /**
-     * Tests if the graph is directed. The graph is undirected if every edge
-     * from Vertex v1 to Vertex v2 has its counterpart - the edge from v2 to v1
-     * which has the same weight, otherwise the graph is directed.
-     *
-     * @return true if the graph is oriented; false otherwise
-     */
-    private boolean directed() {
-        for (Vertex vertex : vertices) {
-            Set<Vertex> neighbours = vertex.getNeighbours();
-            for (Vertex neighbour : neighbours) {
-                if (!(graph.hasEdge(vertex, neighbour)
-                        && graph.hasEdge(neighbour, vertex) && graph.getEdge(
-                                vertex, neighbour).getWeight() == graph.getEdge(
-                                neighbour, vertex).getWeight())) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Returns string of all edges. Every edge from Vertex v1 to Vertex v2 with
-     * weight w is written out in this form: v1 -> v2: w. Edges are separated by
-     * a comma.
+     * weight w is written out in this form: v1->v2: w, if the graph is
+     * directed; v1-v2: w, otherwise. Edges are separated by a comma.
      *
      * @return string with all edges and their weights
      */
     private String listOfEdges() {
         String list = "";
+        String separator;
+        if (graph.isDirected()) {
+            separator = "->";
+        } else {
+            separator = "-";
+        }
         for (Edge edge : edges) {
-            list += edge.getSource().getLabel() + "->"
+            list += edge.getSource().getLabel() + separator
                     + edge.getTarget().getLabel() + ": " + edge.getWeight()
                     + ", ";
         }
